@@ -1,0 +1,37 @@
+[package]
+name = "project-name"
+version = "0.1.0"
+authors = ["{{authors}}"]
+edition = "2018"
+
+[package.metadata.docs.rs]
+features = ["stm32f429", "rt", "usb_fs", "can"]
+targets = ["thumbv7em-none-eabihf"]
+
+[dependencies]
+embedded-hal = { version = "0.2", features = ["unproven"] }
+nb = "0.1.2"
+cortex-m = "0.6"
+cortex-m-rt = "0.6"
+cortex-m-semihosting = "*"
+panic-halt = "0.2"
+panic-semihosting = "0.5.2"
+stm32f4xx-hal = { version = "0.9", features = ["stm32f411", "usb_fs"] }
+
+synopsys-usb-otg = { version = "0.2.0", features = ["cortex-m"], optional = true }
+usb-device = "0.2.5"
+usbd-serial = "0.1.0"
+
+[[bin]]
+name = "stm32f411"
+path = "src/main.rs"
+test = false
+bench = false
+
+[profile.release]
+codegen-units = 1
+debug = true
+lto = true
+
+[features]
+usb_fs = ["synopsys-usb-otg", "synopsys-usb-otg/fs"]
